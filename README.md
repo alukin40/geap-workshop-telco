@@ -157,30 +157,16 @@ Cloud Shell provides a free browser-based Linux VM (4 vCPU / 16 GB RAM, 5 GB per
 
 **1. Open Cloud Shell as the workshop account.** In an Incognito or Guest browser window, open <https://shell.cloud.google.com/?authuser=devstarNNNN@gcplab.me> and sign in using your credentials sheet (password + 2FA code). Click **Open Editor** in the Cloud Shell toolbar (if it is not already open) and open a terminal inside the editor (**Terminal -> New Terminal**).
 
-**2. Find your GCP project, set it active, and authenticate Application Default Credentials (ADC):**
-
-```bash
-gcloud projects list                                       # find your assigned project ID (e.g. pulse-telco-ws-NNNN)
-gcloud config set project YOUR_GCP_PROJECT_ID              # replace with your project ID
-gcloud auth list                                           # verify devstarNNNN@gcplab.me is marked ACTIVE
-gcloud auth application-default login && gcloud auth application-default set-quota-project YOUR_GCP_PROJECT_ID --quiet
-```
-
-**3. Clone the repository and synchronize the Python virtual environment** (~20 seconds):
+**2. Clone the repository and authenticate Application Default Credentials (ADC) in the terminal:**
 
 ```bash
 git clone https://github.com/alukin40/geap-workshop-telco
-cd geap-workshop-telco
-command -v uv >/dev/null || curl -LsSf https://astral.sh/uv/install.sh | sh
-export PATH="$HOME/.local/bin:$PATH"
-uv sync && UV_PROJECT_ENVIRONMENT="$HOME/.venv" uv sync
+gcloud auth application-default login
 ```
 
-*(Why both `uv sync` and `UV_PROJECT_ENVIRONMENT="$HOME/.venv" uv sync`? Cloud Shell Editor opens your home directory `~` as its workspace root, so its **Select Kernel -> Python Environments** menu scans `~/.venv` rather than `~/geap-workshop-telco/.venv`. Because `uv` hardlinks from its cache, the second sync takes under 1 second and uses zero extra disk space.)*
+**3. Open `labs/lab00_setup.ipynb` and click Run All.** Open [labs/lab00_setup.ipynb](labs/lab00_setup.ipynb) in the Cloud Shell Editor, select the Python kernel (**Select Kernel -> Python Environments -> *Python 3.12***), and click **Run All** (~2 minutes). Step 0.1 automatically installs all workshop Python dependencies, `uv`, and `agents-cli` directly into the active kernel, syncs your ADC credentials, detects your GCP project ID automatically, and saves `workshop.env` for Labs 01 to 11. Then proceed through Labs 01 to 11 in order.
 
-**4. Select the *.venv* kernel and run Lab 00.** Open [labs/lab00_setup.ipynb](labs/lab00_setup.ipynb) in the Cloud Shell Editor, click **Select Kernel** in the top-right corner, and choose **Python Environments -> *.venv (Python 3.12)*** (if the dropdown was already open, click the refresh icon in the top-right of the kernel picker). Leave *PROJECT_ID = ""* in Step 0.2 (or paste your project ID explicitly): *Lab 00* automatically verifies that all *pyproject.toml* packages are installed in the active kernel, syncs the ADC file and active project from your Cloud Shell terminal session into the kernel, and saves them to *workshop.env* for Labs 01 to 11. Click **Run All** (~2 minutes). Step 0.3 prints the project number and **the IAM roles your account holds**; if any later cell fails with *PERMISSION_DENIED*, share that role list with the instructor. Then proceed through Labs 01 to 11 in order.
-
-**5. Lab 01 Web Playground (Step 1.8).** Once the notebook cell launches the server, click **Web Preview -> Preview on port 8080**; the playground UI is served at */dev-ui/*. Allow microphone permissions in your browser to test Live Voice.
+**4. Lab 01 Web Playground (Step 1.8).** Once the notebook cell launches the server, click **Web Preview -> Preview on port 8080**; the playground UI is served at */dev-ui/*. Allow microphone permissions in your browser to test Live Voice.
 
 **Reconnecting after a break:** Cloud Shell recycles its underlying VM after roughly 40 minutes of inactivity (such as over lunch). Every file in your home directory persists (repository, *.venv*, *~/.config/gcloud*, *workshop.env*, *pulse-concierge/*). After a break, reopen Cloud Shell Editor and re-run your current notebook from its top cell. To check available disk space in your 5 GB home directory (all labs together use roughly 2.5 GB), run:
 
