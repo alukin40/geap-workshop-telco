@@ -151,24 +151,13 @@ Verified 2026-10-20 against the Google Cloud SKU catalog and official pricing pa
 * *(Only for running on your own laptop, Track 1B)* *git*, [uv](https://docs.astral.sh/uv/getting-started/installation/), and the [Google Cloud CLI](https://cloud.google.com/sdk/docs/install) including the *alpha* component.
 * *(Optional)* **Terraform >= 1.5**, used only for *terraform/* or *reference-production-agent/terraform/*.
 
-### Track 1A (Recommended at the Workshop): Run Everything in Cloud Shell
+### Track 1A (Recommended at the Workshop): Run Directly in Cloud Shell Editor (VS Code)
 
-Cloud Shell provides a free browser-based Linux VM (4 vCPU / 16 GB RAM, 5 GB persistent home directory) with the Google Cloud CLI (including the alpha component), Git, Python 3.12, and uv preinstalled.
+Cloud Shell provides a free browser-based Linux VM (4 vCPU / 16 GB RAM, 5 GB persistent home directory) with a built-in VS Code editor (**Cloud Shell Editor**), the Google Cloud CLI (including the alpha component), Git, Python 3.12, and uv preinstalled. You run the notebooks directly inside the Cloud Shell Editor using the repository's *.venv* Jupyter kernel without launching a separate JupyterLab server.
 
-**1. Open Cloud Shell as the workshop account.** In an Incognito or Guest browser window, open <https://shell.cloud.google.com/?authuser=devstarNNNN@gcplab.me> and sign in using your credentials sheet (password + 2FA code). Accept the terms of service if prompted, and click **Authorize** whenever Cloud Shell requests permission to use your credentials.
+**1. Open Cloud Shell as the workshop account.** In an Incognito or Guest browser window, open <https://shell.cloud.google.com/?authuser=devstarNNNN@gcplab.me> and sign in using your credentials sheet (password + 2FA code). Click **Open Editor** in the Cloud Shell toolbar (if it is not already open) and open a terminal inside the editor (**Terminal -> New Terminal**).
 
-**2. Find your GCP project, set it active, and configure Application Default Credentials (ADC) with your quota project:**
-
-```bash
-gcloud projects list                                       # find your assigned project ID (e.g. pulse-telco-ws-NNNN)
-gcloud config set project pulse-telco-ws-NNNN              # replace with your project ID
-gcloud auth list                                           # verify devstarNNNN@gcplab.me is marked ACTIVE
-gcloud auth application-default login && gcloud auth application-default set-quota-project pulse-telco-ws-NNNN --quiet
-```
-
-Running *gcloud auth application-default login* and *set-quota-project* manually writes a local ADC file bound to your workshop project so *Lab 00* (API enablement and quota project binding) and all Python SDK calls succeed without error.
-
-**3. Clone the repository and synchronize the Python environment** (~20 seconds, uses ~1.1 GB of your 5 GB home directory):
+**2. Clone the repository and synchronize the Python virtual environment** (~20 seconds):
 
 ```bash
 git clone https://github.com/alukin40/geap-workshop-telco
@@ -176,31 +165,59 @@ cd geap-workshop-telco
 uv sync
 ```
 
-**4. Start JupyterLab on port 8081** (port 8080 is reserved for the ADK web playground in Lab 01). Leave this terminal running:
+**3. Find your GCP project, authenticate Application Default Credentials (ADC), and bind them to the *.venv* Jupyter kernel:**
+
+In Cloud Shell, the interactive terminal uses a temporary session config directory (*CLOUDSDK_CONFIG*) that the Cloud Shell Editor's notebook kernel does not automatically inherit. Run the block below in your Cloud Shell terminal to set your project, authenticate ADC, and bind those exact environment variables into both *.venv* and the Jupyter kernel spec:
 
 ```bash
-mkdir -p ~/.local/bin && export PATH="$HOME/.local/bin:$PATH"   # Lab 00 installs agents-cli here
-uv run jupyter lab --no-browser --port 8081 \
-  --IdentityProvider.token='' --ServerApp.allow_remote_access=True --ServerApp.allow_origin='*'
+# 1. Discover your assigned GCP project ID and set it active
+gcloud projects list
+export PROJECT_ID=$(gcloud projects list --format="value(projectId)" --limit=1)
+gcloud config set project "$PROJECT_ID"
+gcloud auth list
+
+# 2. Authenticate Application Default Credentials (ADC) and set the quota project
+gcloud auth application-default login && gcloud auth application-default set-quota-project "$PROJECT_ID" --quiet
+
+# 3. Sync Cloud Shell's active gcloud config & ADC to ~/.config/gcloud and bind them into .venv + Jupyter
+if [ -n "${CLOUDSDK_CONFIG:-}" ] && [ "$CLOUDSDK_CONFIG" != "$HOME/.config/gcloud" ]; then
+  mkdir -p "$HOME/.config/gcloud" && cp -r "$CLOUDSDK_CONFIG"/. "$HOME/.config/gcloud"/
+fi
+
+uv run python -c "
+import os, sysconfig, pathlib
+cfg = os.environ.get('CLOUDSDK_CONFIG') or str(pathlib.Path.home() / '.config/gcloud')
+adc = str(pathlib.Path(cfg) / 'application_default_credentials.json')
+env_vars = {
+    'CLOUDSDK_CONFIG': cfg,
+    'CLOUDSDK_CORE_PROJECT': '$PROJECT_ID',
+    'CLOUDSDK_CORE_ACCOUNT': '$(gcloud config get-value account)',
+    'GOOGLE_CLOUD_PROJECT': '$PROJECT_ID',
+    'GOOGLE_APPLICATION_CREDENTIALS': adc,
+    'DEVSHELL_CLIENT_PORT': os.environ.get('DEVSHELL_CLIENT_PORT', ''),
+}
+sp = pathlib.Path(sysconfig.get_paths()['purelib']) / 'sitecustomize.py'
+sp.write_text('import os, pathlib\n' + '\n'.join(f'if {v!r}: os.environ.setdefault({k!r}, {v!r})' for k, v in env_vars.items()) + '\nos.environ[\"PATH\"] = f\"{pathlib.Path.home()}/.local/bin:{os.environ.get(\\\"PATH\\\", \\\"\\\")}\"\n')
+print('Bound GCP project and ADC into .venv:', sp)
+"
+
+uv run python -m ipykernel install --user \
+  --name geap-workshop \
+  --display-name "GEAP Workshop (.venv)" \
+  --env CLOUDSDK_CONFIG "${CLOUDSDK_CONFIG:-$HOME/.config/gcloud}" \
+  --env CLOUDSDK_CORE_PROJECT "$PROJECT_ID" \
+  --env CLOUDSDK_CORE_ACCOUNT "$(gcloud config get-value account)" \
+  --env GOOGLE_CLOUD_PROJECT "$PROJECT_ID" \
+  --env GOOGLE_APPLICATION_CREDENTIALS "${CLOUDSDK_CONFIG:-$HOME/.config/gcloud}/application_default_credentials.json" \
+  --env DEVSHELL_CLIENT_PORT "${DEVSHELL_CLIENT_PORT:-}" \
+  --env PATH "$HOME/.local/bin:$PWD/.venv/bin:$PATH"
 ```
 
-Cloud Shell Web Preview proxies traffic strictly through your authenticated Google session, so disabling the local Jupyter token is safe inside Cloud Shell.
+**4. Select the kernel and run Lab 00.** Open [labs/lab00_setup.ipynb](labs/lab00_setup.ipynb) in the Cloud Shell Editor, click **Select Kernel** in the top-right corner, and choose either ***.venv (Python 3.12)*** (under *Python Environments*) or ***GEAP Workshop (.venv)*** (under *Jupyter Kernel*). If the kernel was already running before Step 3, click **Restart** in the notebook toolbar so it reloads the new credentials. Leave *PROJECT_ID = ""* in Step 0.2 and click **Run All** (~2 minutes). Step 0.3 prints the project number and **the IAM roles your account holds**; if any later cell fails with *PERMISSION_DENIED*, share that role list with the instructor. Then proceed through Labs 01 to 11 in order.
 
-**5. Open JupyterLab.** Click **Web Preview** (in the Cloud Shell toolbar) -> **Change port** -> enter *8081* -> **Change and Preview**.
+**5. Lab 01 Web Playground (Step 1.8).** Once the notebook cell launches the server, click **Web Preview -> Preview on port 8080**; the playground UI is served at */dev-ui/*. Allow microphone permissions in your browser to test Live Voice.
 
-**6. Run Lab 00.** Open [labs/lab00_setup.ipynb](labs/lab00_setup.ipynb), leave *PROJECT_ID = ""* (it reads the active project configured in Step 2), and click **Run All** (~2 minutes). Step 0.3 prints the project number and **the IAM roles your account holds**; if any later cell fails with *PERMISSION_DENIED*, share that role list with the instructor. Then proceed through Labs 01 to 11 in order.
-
-**7. Lab 01 Web Playground (Step 1.8).** Once the notebook cell launches the server, click **Web Preview -> Preview on port 8080**; the playground UI is served at */dev-ui/*. Allow microphone permissions in your browser to test Live Voice.
-
-**Reconnecting after a break:** Cloud Shell recycles its underlying VM after roughly 40 minutes of inactivity (such as over lunch). Every file in your home directory persists (repository, virtual environments, *workshop.env*, *pulse-concierge/*), whereas background processes stop. After a break, reopen Cloud Shell and restart JupyterLab:
-
-```bash
-cd ~/geap-workshop-telco && export PATH="$HOME/.local/bin:$PATH"
-uv run jupyter lab --no-browser --port 8081 \
-  --IdentityProvider.token='' --ServerApp.allow_remote_access=True --ServerApp.allow_origin='*'
-```
-
-Reopen Web Preview on port 8081 and re-run your current notebook from its top cell. To check available disk space in your 5 GB home directory (all labs together use roughly 2.5 GB), run:
+**Reconnecting after a break:** Cloud Shell recycles its underlying VM after roughly 40 minutes of inactivity (such as over lunch). Every file in your home directory persists (repository, *.venv*, *~/.config/gcloud*, *workshop.env*, *pulse-concierge/*). After a break, reopen Cloud Shell Editor, re-run the *sitecustomize.py* snippet in Step 3 if Cloud Shell assigned a new *DEVSHELL_CLIENT_PORT*, and click **Restart** on your notebook kernel. To check available disk space in your 5 GB home directory (all labs together use roughly 2.5 GB), run:
 
 ```bash
 df -h ~
