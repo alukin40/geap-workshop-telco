@@ -161,9 +161,9 @@ Cloud Shell provides a free browser-based Linux VM (4 vCPU / 16 GB RAM, 5 GB per
 
 ```bash
 gcloud projects list                                       # find your assigned project ID (e.g. pulse-telco-ws-NNNN)
-gcloud config set project pulse-telco-ws-NNNN              # replace with your project ID
+gcloud config set project YOUR_GCP_PROJECT_ID              # replace with your project ID
 gcloud auth list                                           # verify devstarNNNN@gcplab.me is marked ACTIVE
-gcloud auth application-default login && gcloud auth application-default set-quota-project pulse-telco-ws-NNNN --quiet
+gcloud auth application-default login && gcloud auth application-default set-quota-project YOUR_GCP_PROJECT_ID --quiet
 ```
 
 **3. Clone the repository and synchronize the Python virtual environment** (~20 seconds):
@@ -171,10 +171,12 @@ gcloud auth application-default login && gcloud auth application-default set-quo
 ```bash
 git clone https://github.com/alukin40/geap-workshop-telco
 cd geap-workshop-telco
+command -v uv >/dev/null || curl -LsSf https://astral.sh/uv/install.sh | sh
+export PATH="$HOME/.local/bin:$PATH"
 uv sync
 ```
 
-**4. Select the *.venv* kernel and run Lab 00.** Open [labs/lab00_setup.ipynb](labs/lab00_setup.ipynb) in the Cloud Shell Editor, click **Select Kernel** in the top-right corner, and choose **Python Environments -> *.venv (Python 3.12)***. Leave *PROJECT_ID = ""* in Step 0.2 (or paste your project ID explicitly): *Lab 00* automatically syncs the ADC file and active project from your Cloud Shell terminal session into the *.venv* kernel and saves them to *workshop.env* for Labs 01 to 11. Click **Run All** (~2 minutes). Step 0.3 prints the project number and **the IAM roles your account holds**; if any later cell fails with *PERMISSION_DENIED*, share that role list with the instructor. Then proceed through Labs 01 to 11 in order.
+**4. Select the *.venv* kernel and run Lab 00.** Open [labs/lab00_setup.ipynb](labs/lab00_setup.ipynb) in the Cloud Shell Editor, click **Select Kernel** in the top-right corner, and choose **Python Environments -> *.venv (Python 3.12)***. Leave *PROJECT_ID = ""* in Step 0.2 (or paste your project ID explicitly): *Lab 00* automatically verifies that all *pyproject.toml* packages are installed in the active kernel, syncs the ADC file and active project from your Cloud Shell terminal session into the *.venv* kernel, and saves them to *workshop.env* for Labs 01 to 11. Click **Run All** (~2 minutes). Step 0.3 prints the project number and **the IAM roles your account holds**; if any later cell fails with *PERMISSION_DENIED*, share that role list with the instructor. Then proceed through Labs 01 to 11 in order.
 
 **5. Lab 01 Web Playground (Step 1.8).** Once the notebook cell launches the server, click **Web Preview -> Preview on port 8080**; the playground UI is served at */dev-ui/*. Allow microphone permissions in your browser to test Live Voice.
 
