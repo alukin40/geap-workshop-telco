@@ -146,14 +146,55 @@ Verified 2026-10-20 against the Google Cloud SKU catalog and official pricing pa
 
 ### Prerequisites
 
-* **A Google Cloud project with billing enabled**, where your account holds Owner (or Editor plus IAM admin roles). At an instructor-led event, you receive a dedicated account *devstarNNNN@gcplab.me* paired with a pre-provisioned project *pulse-telco-ws-NNNN* (printed on your credentials sheet alongside the password and two one-time 2FA codes). **No personal billing account or project-creation rights are required.**
+* **A Google Cloud project with billing enabled.** At an instructor-led event, you receive a dedicated account *devstarNNNN@gcplab.me* paired with a pre-provisioned project *pulse-telco-ws-NNNN* (printed on your credentials sheet alongside the password and two one-time 2FA codes). **No personal billing account or project-creation rights are required.**
+* **Required IAM roles on the project** (if running in your own GCP environment and your user does not hold *roles/owner*, ensure your account has *roles/editor* plus the following roles so the notebooks can provision IAM personas, bind roles to dynamically minted SPIFFE Agent Identities, read Data Access audit logs, and manage Agent Registry and Model Armor resources):
+  * *roles/resourcemanager.projectIamAdmin* (Project IAM Admin: binds project roles to IAM personas and SPIFFE Agent Identities)
+  * *roles/iam.securityAdmin* (Security Admin: sets service-account IAM policies)
+  * *roles/iam.serviceAccountAdmin* (Service Account Admin: creates *persona-alex-exec* and *persona-elena-care*)
+  * *roles/iam.serviceAccountTokenCreator* (Service Account Token Creator: mints short-lived OAuth 2.0 tokens in Lab 01)
+  * *roles/serviceusage.serviceUsageAdmin* (Service Usage Admin: enables workshop APIs in Lab 00)
+  * *roles/logging.privateLogViewer* (Private Logs Viewer: reads *cloudaudit.googleapis.com/data_access* audit logs in Lab 01)
+  * *roles/logging.configWriter* (Logs Configuration Writer: creates the *pulse_blocked_prompts* log-based metric in Lab 05)
+  * *roles/bigquery.admin* (BigQuery Admin: configures dataset-level READER ACLs in Lab 00)
+  * *roles/dataplex.admin* (Dataplex Admin: creates Knowledge Catalog aspect types and attaches aspects in Lab 00)
+  * *roles/aiplatform.admin* (Vertex AI Admin: deploys Agent Runtime engines, Sessions, Memory Bank, Sandboxes, and Evaluations)
+  * *roles/agentregistry.admin* (Agent Registry Admin: registers MCP servers, A2A agents, and private ADK skills)
+  * *roles/modelarmor.admin* (Model Armor Admin: creates input and output guard templates in Lab 05)
+  * *roles/run.admin* (Cloud Run Admin: deploys the IAM Context MCP server and Remote NOC A2A agent)
+  * *roles/storage.admin* (Storage Admin: creates Cloud Build source buckets and evaluation buckets)
+
+```bash
+# Optional helper for project admins to grant all required workshop roles to a user in a custom environment:
+PROJECT_ID="YOUR_PROJECT_ID"
+USER_EMAIL="YOUR_EMAIL"
+for ROLE in \
+  roles/editor \
+  roles/resourcemanager.projectIamAdmin \
+  roles/iam.securityAdmin \
+  roles/iam.serviceAccountAdmin \
+  roles/iam.serviceAccountTokenCreator \
+  roles/serviceusage.serviceUsageAdmin \
+  roles/logging.privateLogViewer \
+  roles/logging.configWriter \
+  roles/bigquery.admin \
+  roles/dataplex.admin \
+  roles/aiplatform.admin \
+  roles/agentregistry.admin \
+  roles/modelarmor.admin \
+  roles/run.admin \
+  roles/storage.admin; do
+  gcloud projects add-iam-policy-binding "$PROJECT_ID" \
+    --member="user:$USER_EMAIL" --role="$ROLE" --condition=None --quiet >/dev/null
+done
+```
+
 * **A browser** with an Incognito or Guest window (so the workshop account does not collide with your corporate Google or Microsoft session). At the workshop we run everything inside **Cloud Shell** (Track 1A), requiring zero local installations on your laptop.
 * *(Only for running on your own laptop, Track 1B)* *git*, [uv](https://docs.astral.sh/uv/getting-started/installation/), and the [Google Cloud CLI](https://cloud.google.com/sdk/docs/install) including the *alpha* component.
 * *(Optional)* **Terraform >= 1.5**, used only for *terraform/* or *reference-production-agent/terraform/*.
 
 ### Track 1A (Recommended at the Workshop): Run Directly in Cloud Shell Editor (VS Code)
 
-Cloud Shell provides a free browser-based Linux VM (4 vCPU / 16 GB RAM, 5 GB persistent home directory) with a built-in VS Code editor (**Cloud Shell Editor**), the Google Cloud CLI (including the alpha component), Git, Python 3.12, and uv preinstalled. You run the notebooks directly inside the Cloud Shell Editor using the repository's *.venv* Jupyter kernel without launching a separate JupyterLab server.
+Cloud Shell provides a free browser-based Linux VM (4 vCPU / 16 GB RAM, 5 GB persistent home directory) with a built-in VS Code editor (**Cloud Shell Editor**), the Google Cloud CLI (including the alpha component), Git, and Python 3.12 preinstalled. You run the notebooks directly inside the Cloud Shell Editor without launching a separate JupyterLab server.
 
 **1. Open Cloud Shell as the workshop account.** In an Incognito or Guest browser window, open <https://shell.cloud.google.com/?authuser=devstarNNNN@gcplab.me> and sign in using your credentials sheet (password + 2FA code). Click **Open Editor** in the Cloud Shell toolbar (if it is not already open) and open a terminal inside the editor (**Terminal -> New Terminal**).
 
@@ -164,7 +205,7 @@ git clone https://github.com/alukin40/geap-workshop-telco
 gcloud auth application-default login
 ```
 
-**3. Open `labs/lab00_setup.ipynb` and click Run All.** Open [labs/lab00_setup.ipynb](labs/lab00_setup.ipynb) in the Cloud Shell Editor, select the Python kernel (**Select Kernel -> Python Environments -> *Python 3.12***), and click **Run All** (~2 minutes). Step 0.1 automatically installs all workshop Python dependencies, `uv`, and `agents-cli` directly into the active kernel, syncs your ADC credentials, detects your GCP project ID automatically, and saves `workshop.env` for Labs 01 to 11. Then proceed through Labs 01 to 11 in order.
+**3. Open *labs/lab00_setup.ipynb* and click Run All.** Open [labs/lab00_setup.ipynb](labs/lab00_setup.ipynb) in the Cloud Shell Editor, select the Python kernel (**Select Kernel -> Python Environments -> *Python 3.12***), and click **Run All** (~2 minutes). Step 0.1 automatically installs all workshop Python dependencies, *uv*, and *agents-cli* directly into the active kernel, syncs your ADC credentials, detects your GCP project ID automatically, and saves *workshop.env* for Labs 01 to 11. Then proceed through Labs 01 to 11 in order.
 
 **4. Lab 01 Web Playground (Step 1.8).** Once the notebook cell launches the server, click **Web Preview -> Preview on port 8080**; the playground UI is served at */dev-ui/*. Allow microphone permissions in your browser to test Live Voice.
 
