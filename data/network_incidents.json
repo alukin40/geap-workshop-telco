@@ -1,0 +1,98 @@
+[
+  {
+    "incident_id": "INC-7001",
+    "tower_id": "TWR-PRG-02",
+    "region_code": "PRG",
+    "severity": "P1_CRITICAL",
+    "incident_status": "open",
+    "root_cause_category": "fiber_cut",
+    "started_at": "2026-08-29 07:15:00",
+    "duration_minutes": 340,
+    "affected_subscribers_est": 1450,
+    "summary": "Primary 100G backhaul fiber cut near Prague TechHub East; traffic rerouted over backup ring with 2.85% packet loss."
+  },
+  {
+    "incident_id": "INC-7002",
+    "tower_id": "TWR-BRN-02",
+    "region_code": "BRN",
+    "severity": "P2_MAJOR",
+    "incident_status": "investigating",
+    "root_cause_category": "ran_congestion",
+    "started_at": "2026-08-29 09:40:00",
+    "duration_minutes": 195,
+    "affected_subscribers_est": 680,
+    "summary": "3500 MHz MIMO sector B interference causing elevated uplink retransmissions at Brno Science Park."
+  },
+  {
+    "incident_id": "INC-7003",
+    "tower_id": "TWR-OVA-02",
+    "region_code": "OVA",
+    "severity": "P3_MINOR",
+    "incident_status": "mitigated",
+    "root_cause_category": "scheduled_upgrade",
+    "started_at": "2026-08-28 22:00:00",
+    "duration_minutes": 180,
+    "affected_subscribers_est": 210,
+    "summary": "Scheduled microwave backhaul firmware upgrade at Ostrava Logistics Zone."
+  },
+  {
+    "incident_id": "INC-7004",
+    "tower_id": "TWR-PRG-01",
+    "region_code": "PRG",
+    "severity": "P2_MAJOR",
+    "incident_status": "resolved",
+    "root_cause_category": "core_routing_flap",
+    "started_at": "2026-08-14 14:10:00",
+    "duration_minutes": 42,
+    "affected_subscribers_est": 920,
+    "summary": "BGP session flap on UPF core router; resolved via automated failover."
+  },
+  {
+    "incident_id": "INC-7005",
+    "tower_id": "TWR-BTS-02",
+    "region_code": "BTS",
+    "severity": "P3_MINOR",
+    "incident_status": "resolved",
+    "root_cause_category": "power_unit_fault",
+    "started_at": "2026-08-19 03:20:00",
+    "duration_minutes": 65,
+    "affected_subscribers_est": 150,
+    "summary": "Rectifier module B fault switched cleanly to battery backup until field replacement."
+  },
+  {
+    "incident_id": "INC-7006",
+    "tower_id": "TWR-VIE-01",
+    "region_code": "VIE",
+    "severity": "P3_MINOR",
+    "incident_status": "resolved",
+    "root_cause_category": "ran_congestion",
+    "started_at": "2026-08-10 18:00:00",
+    "duration_minutes": 90,
+    "affected_subscribers_est": 410,
+    "summary": "Evening event crowd spike handled via dynamic carrier aggregation."
+  },
+  {
+    "incident_id": "INC-7007",
+    "tower_id": "TWR-PRG-02",
+    "region_code": "PRG",
+    "severity": "P2_MAJOR",
+    "incident_status": "resolved",
+    "root_cause_category": "ran_congestion",
+    "started_at": "2026-08-05 11:30:00",
+    "duration_minutes": 115,
+    "affected_subscribers_est": 890,
+    "summary": "High enterprise slice contention during peak morning hours at Prague TechHub East."
+  },
+  {
+    "incident_id": "INC-7008",
+    "tower_id": "TWR-BRN-01",
+    "region_code": "BRN",
+    "severity": "P3_MINOR",
+    "incident_status": "resolved",
+    "root_cause_category": "scheduled_upgrade",
+    "started_at": "2026-07-22 01:00:00",
+    "duration_minutes": 120,
+    "affected_subscribers_est": 180,
+    "summary": "5G SA core slice software patch completed within maintenance window."
+  }
+]

@@ -1,0 +1,11 @@
+project_id        = "your-existing-gcp-project-id"
+region            = "europe-west1"
+bq_location       = "EU"
+dataplex_location = "eu"
+model_location    = "eu"
+model_id          = "gemini-3.8-flash"
+agent_name        = "pulse-concierge"
+
+dataset_crm     = "telco_crm"
+dataset_billing = "telco_billing"
+dataset_network = "telco_network"

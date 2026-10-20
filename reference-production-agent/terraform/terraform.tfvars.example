@@ -1,0 +1,18 @@
+project_id = "your-project-id" # can be an empty project with billing linked
+region     = "europe-west4"    # Agent Runtime, Cloud Run, Agent Registry, Agent Gateway
+
+# EU-wide multi-region endpoints
+model_location = "eu" # Gemini text
+live_location  = "eu" # Gemini Live API (voice)
+bq_location    = "EU" # BigQuery (Knowledge Catalog: eu)
+# model_armor_location = "europe-west4" # default: same as region
+
+deploy_agent_runtime = true
+
+# Optional egress Agent Gateway (see ../AGENT_GATEWAY_DEMO.md). false = no gateway resources.
+enable_agent_gateway      = false
+agent_gateway_enforcement = "DRY_RUN" # or "ENFORCED"
+agent_gateway_model_armor = true
+# Only in orgs where you are org policy admin (Argolis). New orgs enforce
+# iam.managed.disableAccessPolicyBinding by default, which blocks the per-tool access policy.
+apply_org_policy_overrides = false

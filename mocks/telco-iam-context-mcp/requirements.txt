@@ -1,0 +1,3 @@
+# Pulse Telco IAM Context MCP dependencies
+mcp==1.29.1
+starlette>=0.40

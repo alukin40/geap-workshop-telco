@@ -1,0 +1,76 @@
+subscription_id,subscriber_id,tariff_code,tariff_name,service_type,monthly_recurring_eur,data_allowance_gb,contract_end_date,subscription_status
+PLN-2001,SUB-1001,PULSE-BIZ-FLEET,Pulse Enterprise Fleet 5G,converged_biz,129.0,-1,2027-01-01,paused
+PLN-2002,SUB-1001,PULSE-FIBER-1G,Pulse Home Fiber 1 Gbps,fixed_fiber,39.0,-1,2027-01-01,active
+PLN-2003,SUB-1002,PULSE-5G-PRO,Pulse 5G Pro 100GB,mobile_5g,34.0,100,2027-02-01,active
+PLN-2004,SUB-1003,PULSE-START-10G,Pulse Starter 10GB,mobile_5g,19.0,10,2027-03-01,active
+PLN-2005,SUB-1004,PULSE-FIBER-1G,Pulse Home Fiber 1 Gbps,fixed_fiber,39.0,-1,2027-04-01,active
+PLN-2006,SUB-1005,PULSE-5G-UNL,Pulse 5G Unlimited,mobile_5g,49.0,-1,2027-05-01,active
+PLN-2007,SUB-1005,PULSE-FIBER-1G,Pulse Home Fiber 1 Gbps,fixed_fiber,39.0,-1,2027-05-01,active
+PLN-2008,SUB-1006,PULSE-BIZ-FLEET,Pulse Enterprise Fleet 5G,converged_biz,129.0,-1,2027-06-01,active
+PLN-2009,SUB-1007,PULSE-5G-UNL,Pulse 5G Unlimited,mobile_5g,49.0,-1,2027-07-01,active
+PLN-2010,SUB-1008,PULSE-FIBER-1G,Pulse Home Fiber 1 Gbps,fixed_fiber,39.0,-1,2027-08-01,active
+PLN-2011,SUB-1009,PULSE-5G-UNL,Pulse 5G Unlimited,mobile_5g,49.0,-1,2027-09-01,active
+PLN-2012,SUB-1009,PULSE-FIBER-1G,Pulse Home Fiber 1 Gbps,fixed_fiber,39.0,-1,2027-09-01,active
+PLN-2013,SUB-1010,PULSE-FIBER-1G,Pulse Home Fiber 1 Gbps,fixed_fiber,39.0,-1,2027-10-01,active
+PLN-2014,SUB-1011,PULSE-BIZ-FLEET,Pulse Enterprise Fleet 5G,converged_biz,129.0,-1,2027-11-01,active
+PLN-2015,SUB-1012,PULSE-FIBER-1G,Pulse Home Fiber 1 Gbps,fixed_fiber,39.0,-1,2027-12-01,active
+PLN-2016,SUB-1013,PULSE-5G-UNL,Pulse 5G Unlimited,mobile_5g,49.0,-1,2027-01-01,active
+PLN-2017,SUB-1013,PULSE-FIBER-1G,Pulse Home Fiber 1 Gbps,fixed_fiber,39.0,-1,2027-01-01,active
+PLN-2018,SUB-1014,PULSE-5G-PRO,Pulse 5G Pro 100GB,mobile_5g,34.0,100,2027-02-01,active
+PLN-2019,SUB-1015,PULSE-START-10G,Pulse Starter 10GB,mobile_5g,19.0,10,2027-03-01,active
+PLN-2020,SUB-1016,PULSE-BIZ-FLEET,Pulse Enterprise Fleet 5G,converged_biz,129.0,-1,2027-04-01,active
+PLN-2021,SUB-1017,PULSE-5G-UNL,Pulse 5G Unlimited,mobile_5g,49.0,-1,2027-05-01,active
+PLN-2022,SUB-1017,PULSE-FIBER-1G,Pulse Home Fiber 1 Gbps,fixed_fiber,39.0,-1,2027-05-01,active
+PLN-2023,SUB-1018,PULSE-5G-PRO,Pulse 5G Pro 100GB,mobile_5g,34.0,100,2027-06-01,active
+PLN-2024,SUB-1019,PULSE-5G-UNL,Pulse 5G Unlimited,mobile_5g,49.0,-1,2027-07-01,active
+PLN-2025,SUB-1020,PULSE-FIBER-1G,Pulse Home Fiber 1 Gbps,fixed_fiber,39.0,-1,2027-08-01,paused
+PLN-2026,SUB-1021,PULSE-BIZ-FLEET,Pulse Enterprise Fleet 5G,converged_biz,129.0,-1,2027-09-01,active
+PLN-2027,SUB-1021,PULSE-FIBER-1G,Pulse Home Fiber 1 Gbps,fixed_fiber,39.0,-1,2027-09-01,active
+PLN-2028,SUB-1022,PULSE-FIBER-1G,Pulse Home Fiber 1 Gbps,fixed_fiber,39.0,-1,2027-10-01,active
+PLN-2029,SUB-1023,PULSE-START-10G,Pulse Starter 10GB,mobile_5g,19.0,10,2027-11-01,active
+PLN-2030,SUB-1024,PULSE-FIBER-1G,Pulse Home Fiber 1 Gbps,fixed_fiber,39.0,-1,2027-12-01,active
+PLN-2031,SUB-1025,PULSE-5G-UNL,Pulse 5G Unlimited,mobile_5g,49.0,-1,2027-01-01,active
+PLN-2032,SUB-1025,PULSE-FIBER-1G,Pulse Home Fiber 1 Gbps,fixed_fiber,39.0,-1,2027-01-01,active
+PLN-2033,SUB-1026,PULSE-BIZ-FLEET,Pulse Enterprise Fleet 5G,converged_biz,129.0,-1,2027-02-01,active
+PLN-2034,SUB-1027,PULSE-START-10G,Pulse Starter 10GB,mobile_5g,19.0,10,2027-03-01,active
+PLN-2035,SUB-1028,PULSE-FIBER-1G,Pulse Home Fiber 1 Gbps,fixed_fiber,39.0,-1,2027-04-01,active
+PLN-2036,SUB-1029,PULSE-5G-UNL,Pulse 5G Unlimited,mobile_5g,49.0,-1,2027-05-01,active
+PLN-2037,SUB-1029,PULSE-FIBER-1G,Pulse Home Fiber 1 Gbps,fixed_fiber,39.0,-1,2027-05-01,active
+PLN-2038,SUB-1030,PULSE-5G-PRO,Pulse 5G Pro 100GB,mobile_5g,34.0,100,2027-06-01,active
+PLN-2039,SUB-1031,PULSE-BIZ-FLEET,Pulse Enterprise Fleet 5G,converged_biz,129.0,-1,2027-07-01,active
+PLN-2040,SUB-1032,PULSE-FIBER-1G,Pulse Home Fiber 1 Gbps,fixed_fiber,39.0,-1,2027-08-01,active
+PLN-2041,SUB-1033,PULSE-5G-UNL,Pulse 5G Unlimited,mobile_5g,49.0,-1,2027-09-01,active
+PLN-2042,SUB-1033,PULSE-FIBER-1G,Pulse Home Fiber 1 Gbps,fixed_fiber,39.0,-1,2027-09-01,active
+PLN-2043,SUB-1034,PULSE-FIBER-1G,Pulse Home Fiber 1 Gbps,fixed_fiber,39.0,-1,2027-10-01,active
+PLN-2044,SUB-1035,PULSE-START-10G,Pulse Starter 10GB,mobile_5g,19.0,10,2027-11-01,active
+PLN-2045,SUB-1036,PULSE-BIZ-FLEET,Pulse Enterprise Fleet 5G,converged_biz,129.0,-1,2027-12-01,active
+PLN-2046,SUB-1037,PULSE-5G-UNL,Pulse 5G Unlimited,mobile_5g,49.0,-1,2027-01-01,active
+PLN-2047,SUB-1037,PULSE-FIBER-1G,Pulse Home Fiber 1 Gbps,fixed_fiber,39.0,-1,2027-01-01,active
+PLN-2048,SUB-1038,PULSE-5G-PRO,Pulse 5G Pro 100GB,mobile_5g,34.0,100,2027-02-01,active
+PLN-2049,SUB-1039,PULSE-START-10G,Pulse Starter 10GB,mobile_5g,19.0,10,2027-03-01,paused
+PLN-2050,SUB-1040,PULSE-FIBER-1G,Pulse Home Fiber 1 Gbps,fixed_fiber,39.0,-1,2027-04-01,active
+PLN-2051,SUB-1041,PULSE-BIZ-FLEET,Pulse Enterprise Fleet 5G,converged_biz,129.0,-1,2027-05-01,active
+PLN-2052,SUB-1041,PULSE-FIBER-1G,Pulse Home Fiber 1 Gbps,fixed_fiber,39.0,-1,2027-05-01,active
+PLN-2053,SUB-1042,PULSE-5G-PRO,Pulse 5G Pro 100GB,mobile_5g,34.0,100,2027-06-01,active
+PLN-2054,SUB-1043,PULSE-5G-UNL,Pulse 5G Unlimited,mobile_5g,49.0,-1,2027-07-01,active
+PLN-2055,SUB-1044,PULSE-FIBER-1G,Pulse Home Fiber 1 Gbps,fixed_fiber,39.0,-1,2027-08-01,active
+PLN-2056,SUB-1045,PULSE-5G-UNL,Pulse 5G Unlimited,mobile_5g,49.0,-1,2027-09-01,active
+PLN-2057,SUB-1045,PULSE-FIBER-1G,Pulse Home Fiber 1 Gbps,fixed_fiber,39.0,-1,2027-09-01,active
+PLN-2058,SUB-1046,PULSE-BIZ-FLEET,Pulse Enterprise Fleet 5G,converged_biz,129.0,-1,2027-10-01,active
+PLN-2059,SUB-1047,PULSE-START-10G,Pulse Starter 10GB,mobile_5g,19.0,10,2027-11-01,active
+PLN-2060,SUB-1048,PULSE-FIBER-1G,Pulse Home Fiber 1 Gbps,fixed_fiber,39.0,-1,2027-12-01,active
+PLN-2061,SUB-1049,PULSE-5G-UNL,Pulse 5G Unlimited,mobile_5g,49.0,-1,2027-01-01,active
+PLN-2062,SUB-1049,PULSE-FIBER-1G,Pulse Home Fiber 1 Gbps,fixed_fiber,39.0,-1,2027-01-01,active
+PLN-2063,SUB-1050,PULSE-5G-PRO,Pulse 5G Pro 100GB,mobile_5g,34.0,100,2027-02-01,active
+PLN-2064,SUB-1051,PULSE-BIZ-FLEET,Pulse Enterprise Fleet 5G,converged_biz,129.0,-1,2027-03-01,active
+PLN-2065,SUB-1052,PULSE-FIBER-1G,Pulse Home Fiber 1 Gbps,fixed_fiber,39.0,-1,2027-04-01,active
+PLN-2066,SUB-1053,PULSE-5G-UNL,Pulse 5G Unlimited,mobile_5g,49.0,-1,2027-05-01,active
+PLN-2067,SUB-1053,PULSE-FIBER-1G,Pulse Home Fiber 1 Gbps,fixed_fiber,39.0,-1,2027-05-01,active
+PLN-2068,SUB-1054,PULSE-5G-PRO,Pulse 5G Pro 100GB,mobile_5g,34.0,100,2027-06-01,active
+PLN-2069,SUB-1055,PULSE-5G-UNL,Pulse 5G Unlimited,mobile_5g,49.0,-1,2027-07-01,active
+PLN-2070,SUB-1056,PULSE-BIZ-FLEET,Pulse Enterprise Fleet 5G,converged_biz,129.0,-1,2027-08-01,active
+PLN-2071,SUB-1057,PULSE-5G-UNL,Pulse 5G Unlimited,mobile_5g,49.0,-1,2027-09-01,active
+PLN-2072,SUB-1057,PULSE-FIBER-1G,Pulse Home Fiber 1 Gbps,fixed_fiber,39.0,-1,2027-09-01,active
+PLN-2073,SUB-1058,PULSE-FIBER-1G,Pulse Home Fiber 1 Gbps,fixed_fiber,39.0,-1,2027-10-01,paused
+PLN-2074,SUB-1059,PULSE-START-10G,Pulse Starter 10GB,mobile_5g,19.0,10,2027-11-01,active
+PLN-2075,SUB-1060,PULSE-FIBER-1G,Pulse Home Fiber 1 Gbps,fixed_fiber,39.0,-1,2027-12-01,active

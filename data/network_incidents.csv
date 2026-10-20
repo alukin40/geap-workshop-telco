@@ -1,0 +1,9 @@
+incident_id,tower_id,region_code,severity,incident_status,root_cause_category,started_at,duration_minutes,affected_subscribers_est,summary
+INC-7001,TWR-PRG-02,PRG,P1_CRITICAL,open,fiber_cut,2026-08-29 07:15:00,340,1450,Primary 100G backhaul fiber cut near Prague TechHub East; traffic rerouted over backup ring with 2.85% packet loss.
+INC-7002,TWR-BRN-02,BRN,P2_MAJOR,investigating,ran_congestion,2026-08-29 09:40:00,195,680,3500 MHz MIMO sector B interference causing elevated uplink retransmissions at Brno Science Park.
+INC-7003,TWR-OVA-02,OVA,P3_MINOR,mitigated,scheduled_upgrade,2026-08-28 22:00:00,180,210,Scheduled microwave backhaul firmware upgrade at Ostrava Logistics Zone.
+INC-7004,TWR-PRG-01,PRG,P2_MAJOR,resolved,core_routing_flap,2026-08-14 14:10:00,42,920,BGP session flap on UPF core router; resolved via automated failover.
+INC-7005,TWR-BTS-02,BTS,P3_MINOR,resolved,power_unit_fault,2026-08-19 03:20:00,65,150,Rectifier module B fault switched cleanly to battery backup until field replacement.
+INC-7006,TWR-VIE-01,VIE,P3_MINOR,resolved,ran_congestion,2026-08-10 18:00:00,90,410,Evening event crowd spike handled via dynamic carrier aggregation.
+INC-7007,TWR-PRG-02,PRG,P2_MAJOR,resolved,ran_congestion,2026-08-05 11:30:00,115,890,High enterprise slice contention during peak morning hours at Prague TechHub East.
+INC-7008,TWR-BRN-01,BRN,P3_MINOR,resolved,scheduled_upgrade,2026-07-22 01:00:00,120,180,5G SA core slice software patch completed within maintenance window.

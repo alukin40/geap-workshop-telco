@@ -1,0 +1,13 @@
+tower_id,site_name,region_code,city,radio_tech,band_mhz,avg_utilization_pct,packet_loss_pct,backhaul_type,operational_state
+TWR-PRG-01,Prague Central 5G Macro,PRG,Prague,5G_SA,3500,64.2,0.04,100G_fiber,healthy
+TWR-PRG-02,Prague TechHub East 5G,PRG,Prague,5G_SA,3500,93.8,2.85,100G_fiber,degraded
+TWR-PRG-03,Prague West Residential,PRG,Prague,5G_NSA,2100,58.0,0.08,10G_fiber,healthy
+TWR-PRG-04,Prague Airport Corridor,PRG,Prague,5G_SA,3500,71.5,0.11,100G_fiber,healthy
+TWR-BRN-01,Brno City Center 5G,BRN,Brno,5G_SA,3500,61.4,0.05,100G_fiber,healthy
+TWR-BRN-02,Brno Science Park 5G,BRN,Brno,5G_SA,3500,89.4,1.92,10G_fiber,degraded
+TWR-BRN-03,Brno South Industrial,BRN,Brno,5G_NSA,1800,52.1,0.09,10G_fiber,healthy
+TWR-OVA-01,Ostrava Downtown 5G,OVA,Ostrava,5G_NSA,2100,63.0,0.07,10G_fiber,healthy
+TWR-OVA-02,Ostrava Logistics Zone,OVA,Ostrava,LTE_A,1800,79.2,0.45,microwave_redundancy,maintenance
+TWR-BTS-01,Bratislava Old Town 5G,BTS,Bratislava,5G_SA,3500,67.8,0.06,100G_fiber,healthy
+TWR-BTS-02,Bratislava Harbor Business,BTS,Bratislava,5G_SA,3500,72.3,0.12,100G_fiber,healthy
+TWR-VIE-01,Vienna Danube Tower 5G,VIE,Vienna,5G_SA,3500,69.1,0.04,100G_fiber,healthy

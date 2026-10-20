@@ -1,0 +1,2 @@
+# Cloud Run Procfile entrypoint
+web: python agent.py

@@ -1,0 +1,28 @@
+# written by Lab00
+workshop.env
+# scaffolded by Lab01 with agents-cli (participants create their own)
+pulse-concierge/
+# notebook env
+.venv/
+.ipynb_checkpoints/
+__pycache__/
+*.pyc
+# lab artifacts
+labs/artifacts/
+labs/*.html
+labs/*.log
+mocks/**/.venv/
+mocks/telco-network-ops-agent/env.yaml
+# terraform local state & cache
+**/.terraform/
+**/*.tfstate
+**/*.tfstate.*
+**/*.tfvars
+!**/terraform.tfvars.example
+# scaffolded by Lab08 (participants create their own)
+pulse-workflow-agent/
+# per-deployment state written by agents-cli / reference scripts (points at a specific project's engine)
+**/deployment_metadata.json
+**/deployment_metadata.json.lock
+**/.prod_verification_report.json
+**/.google-agents-cli/
