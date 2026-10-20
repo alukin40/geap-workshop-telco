@@ -113,17 +113,52 @@ def _google_auth_headers(_ctx) -> dict[str, str]:
     return {"Authorization": f"Bearer {_credentials.token}", "x-goog-user-project": PROJECT_ID}
 
 
-bigquery_tools = McpToolset(
-    connection_params=StreamableHTTPConnectionParams(url="https://bigquery.googleapis.com/mcp"),
-    header_provider=_google_auth_headers,
-    tool_filter=["list_dataset_ids", "list_table_ids", "get_table_info", "execute_sql_readonly"],
-)
+# Ensure remote StreamableHTTP MCP sessions auto-reconnect if an idle keep-alive socket drops between turns
+from google.adk.tools.mcp_tool import mcp_tool as _mcp_tool_mod, mcp_toolset as _mcp_toolset_mod
 
-knowledge_catalog_tools = McpToolset(
-    connection_params=StreamableHTTPConnectionParams(url="https://dataplex.googleapis.com/mcp"),
-    header_provider=_google_auth_headers,
-    tool_filter=["search_entries", "lookup_entry", "lookup_context"],
-)
+if not getattr(_mcp_tool_mod, "_pulse_mcp_patched", False):
+    _orig_is_term = _mcp_tool_mod._is_session_terminated_error
+    _is_term = lambda exc: isinstance(exc, (ConnectionError, TimeoutError)) or _orig_is_term(exc)
+    _mcp_tool_mod._is_session_terminated_error = _is_term
+    _mcp_toolset_mod._is_session_terminated_error = _is_term
+    _orig_mcp_run = _mcp_tool_mod.McpTool._run_async_impl
+
+    async def _resilient_mcp_run(self, *, args, tool_context, credential):
+        import asyncio as _aio
+        for attempt in (1, 2, 3):
+            try:
+                return await _orig_mcp_run(self, args=args, tool_context=tool_context, credential=credential)
+            except (ConnectionError, TimeoutError):
+                if attempt == 3:
+                    raise
+                await _aio.sleep(0.5 * attempt)
+
+    _mcp_tool_mod.McpTool._run_async_impl = _resilient_mcp_run
+    _mcp_tool_mod._pulse_mcp_patched = True
+
+
+def make_bigquery_tools() -> McpToolset:
+    return McpToolset(
+        connection_params=StreamableHTTPConnectionParams(
+            url="https://bigquery.googleapis.com/mcp", timeout=60.0, terminate_on_close=False
+        ),
+        header_provider=_google_auth_headers,
+        tool_filter=["list_dataset_ids", "list_table_ids", "get_table_info", "execute_sql_readonly"],
+    )
+
+
+def make_knowledge_catalog_tools() -> McpToolset:
+    return McpToolset(
+        connection_params=StreamableHTTPConnectionParams(
+            url="https://dataplex.googleapis.com/mcp", timeout=60.0, terminate_on_close=False
+        ),
+        header_provider=_google_auth_headers,
+        tool_filter=["search_entries", "lookup_entry", "lookup_context"],
+    )
+
+
+bigquery_tools = make_bigquery_tools()
+knowledge_catalog_tools = make_knowledge_catalog_tools()
 
 
 # --- 2. Custom MCP server: IAM & User Context service -----------------------------------------
@@ -137,9 +172,11 @@ def _end_user_headers(ctx: ReadonlyContext) -> dict[str, str]:
 if IAM_MCP_RESOURCE:
     registry = AgentRegistry(project_id=PROJECT_ID, location=REGISTRY_LOCATION, header_provider=_end_user_headers)
     iam_context_tools = registry.get_mcp_toolset(IAM_MCP_RESOURCE)
+    iam_context_tools._connection_params.timeout = 60.0
+    iam_context_tools._connection_params.terminate_on_close = False
 else:
     iam_context_tools = McpToolset(
-        connection_params=StreamableHTTPConnectionParams(url=IAM_MCP_URL),
+        connection_params=StreamableHTTPConnectionParams(url=IAM_MCP_URL, timeout=60.0, terminate_on_close=False),
         header_provider=_end_user_headers,
     )
 
@@ -181,8 +218,8 @@ Workflow:
     tools=[
         query_crm_domain,
         query_bigquery_as_user,
-        bigquery_tools,
-        knowledge_catalog_tools,
+        make_bigquery_tools(),
+        make_knowledge_catalog_tools(),
         lookup_knowledge_catalog,
         analyst_skills,
         run_python,
@@ -203,8 +240,8 @@ Workflow:
     tools=[
         query_billing_domain,
         query_bigquery_as_user,
-        bigquery_tools,
-        knowledge_catalog_tools,
+        make_bigquery_tools(),
+        make_knowledge_catalog_tools(),
         lookup_knowledge_catalog,
         analyst_skills,
         run_python,
@@ -244,7 +281,7 @@ Rules:
 
 orchestrator_tools = [
     iam_context_tools,
-    knowledge_catalog_tools,
+    make_knowledge_catalog_tools(),
     lookup_knowledge_catalog,
     query_crm_domain,
     query_billing_domain,
