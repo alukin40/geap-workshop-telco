@@ -153,21 +153,26 @@ Verified 2026-10-20 against the Google Cloud SKU catalog and official pricing pa
 
 ### Track 1A (Recommended at the Workshop): Run Everything in Cloud Shell
 
-Cloud Shell provides a free browser-based Linux VM (4 vCPU / 16 GB RAM, 5 GB persistent home directory) with the Google Cloud CLI (including the alpha component), Git, Python 3.12, and uv preinstalled. Both *gcloud* and Application Default Credentials (ADC) are automatically authenticated as your *devstarNNNN@gcplab.me* identity, which matches the Lab 00 and Lab 01 persona-impersonation setup out of the box.
+Cloud Shell provides a free browser-based Linux VM (4 vCPU / 16 GB RAM, 5 GB persistent home directory) with the Google Cloud CLI (including the alpha component), Git, Python 3.12, and uv preinstalled.
 
 **1. Open Cloud Shell as the workshop account.** In an Incognito or Guest browser window, open <https://shell.cloud.google.com/?authuser=devstarNNNN@gcplab.me> and sign in using your credentials sheet (password + 2FA code). Accept the terms of service if prompted, and click **Authorize** whenever Cloud Shell requests permission to use your credentials.
 
-**2. Set your active project and verify your identity:**
+**2. Find your GCP project, set it active, and configure Application Default Credentials (ADC) with your quota project:**
 
 ```bash
-gcloud config set project pulse-telco-ws-NNNN   # replace with the project ID on your credentials sheet
-gcloud auth list                                # devstarNNNN@gcplab.me must be marked ACTIVE
+gcloud projects list                                       # find your assigned project ID (e.g. pulse-telco-ws-NNNN)
+gcloud config set project pulse-telco-ws-NNNN              # replace with your project ID
+gcloud auth list                                           # verify devstarNNNN@gcplab.me is marked ACTIVE
+gcloud auth application-default login && gcloud auth application-default set-quota-project pulse-telco-ws-NNNN --quiet
 ```
+
+Running *gcloud auth application-default login* and *set-quota-project* manually writes a local ADC file bound to your workshop project so *Lab 00* (API enablement and quota project binding) and all Python SDK calls succeed without error.
 
 **3. Clone the repository and synchronize the Python environment** (~20 seconds, uses ~1.1 GB of your 5 GB home directory):
 
 ```bash
-git clone https://github.com/alukin40/geap-workshop-telco.git ~/geap-workshop-telco && cd ~/geap-workshop-telco
+git clone https://github.com/alukin40/geap-workshop-telco
+cd geap-workshop-telco
 uv sync
 ```
 
@@ -183,7 +188,7 @@ Cloud Shell Web Preview proxies traffic strictly through your authenticated Goog
 
 **5. Open JupyterLab.** Click **Web Preview** (in the Cloud Shell toolbar) -> **Change port** -> enter *8081* -> **Change and Preview**.
 
-**6. Run Lab 00.** Open [labs/lab00_setup.ipynb](labs/lab00_setup.ipynb), leave *PROJECT_ID = ""* (it reads the active project configured in Step 2), and click **Run All** (~2 minutes). Step 0.3 prints the project number and **the IAM roles your account holds**; if any later cell fails with *PERMISSION_DENIED*, share that role list with the instructor. The Cloud Shell warning about application default credentials quota project not being set up is expected and harmless. Then proceed through Labs 01 to 11 in order.
+**6. Run Lab 00.** Open [labs/lab00_setup.ipynb](labs/lab00_setup.ipynb), leave *PROJECT_ID = ""* (it reads the active project configured in Step 2), and click **Run All** (~2 minutes). Step 0.3 prints the project number and **the IAM roles your account holds**; if any later cell fails with *PERMISSION_DENIED*, share that role list with the instructor. Then proceed through Labs 01 to 11 in order.
 
 **7. Lab 01 Web Playground (Step 1.8).** Once the notebook cell launches the server, click **Web Preview -> Preview on port 8080**; the playground UI is served at */dev-ui/*. Allow microphone permissions in your browser to test Live Voice.
 
@@ -207,7 +212,7 @@ uv cache clean   # optional: reclaims package cache space if needed
 **1. Clone the repository:**
 
 ```bash
-git clone https://github.com/alukin40/geap-workshop-telco.git geap-workshop-telco
+git clone https://github.com/alukin40/geap-workshop-telco
 cd geap-workshop-telco
 ```
 
@@ -219,13 +224,14 @@ Because *gcloud* stores a single Application Default Credentials (ADC) file per 
 export CLOUDSDK_CONFIG="$HOME/.config/gcloud-geap-workshop"
 ```
 
-**3. Authenticate both the CLI and Application Default Credentials:**
+**3. Authenticate both the CLI and Application Default Credentials, and set the quota project:**
 
 ```bash
 gcloud config configurations create geap-telco-workshop   # isolated gcloud profile for the workshop
 gcloud auth login                                          # sign in as devstarNNNN@gcplab.me
-gcloud config set project pulse-telco-ws-NNNN              # your project ID from the credentials sheet
-gcloud auth application-default login                      # sign in a SECOND time with the same devstar account
+gcloud projects list                                       # find your assigned project ID (e.g. pulse-telco-ws-NNNN)
+gcloud config set project pulse-telco-ws-NNNN              # replace with your project ID
+gcloud auth application-default login && gcloud auth application-default set-quota-project pulse-telco-ws-NNNN --quiet
 ```
 
 * *gcloud auth login* authenticates CLI commands, whereas *gcloud auth application-default login* authenticates Python SDKs and *agents-cli*. Both must use the exact same principal.
@@ -280,14 +286,14 @@ gcloud auth list
 
 ```bash
 gcloud auth login --no-launch-browser
-gcloud auth application-default login --no-launch-browser
 gcloud config set project pulse-telco-ws-NNNN
+gcloud auth application-default login --no-launch-browser && gcloud auth application-default set-quota-project pulse-telco-ws-NNNN --quiet
 ```
 
 3. Install [uv](https://docs.astral.sh/uv/getting-started/installation/), clone the repository, and register its virtual environment as a Jupyter kernel with *~/.local/bin* on its *PATH*:
 
 ```bash
-git clone https://github.com/alukin40/geap-workshop-telco.git ~/geap-workshop-telco && cd ~/geap-workshop-telco && uv sync
+git clone https://github.com/alukin40/geap-workshop-telco ~/geap-workshop-telco && cd ~/geap-workshop-telco && uv sync
 uv run python -m ipykernel install --user --name geap --display-name "GEAP workshop (.venv)" \
   --env PATH "$HOME/.local/bin:$HOME/geap-workshop-telco/.venv/bin:/usr/local/bin:/usr/bin:/bin"
 ```
@@ -303,7 +309,7 @@ Google Frictionless workshop accounts (*devstarNNNN@gcplab.me*) ship with an Edi
 As the event administrator (holding Project IAM Admin across all event projects), run the bootstrap script from Cloud Shell before the session starts to grant those four roles and pre-enable all required APIs:
 
 ```bash
-git clone https://github.com/alukin40/geap-workshop-telco.git geap-workshop-telco && cd geap-workshop-telco
+git clone https://github.com/alukin40/geap-workshop-telco && cd geap-workshop-telco
 ./instructor/grant_participant_access.sh 4370          # test on a single project first
 ./instructor/grant_participant_access.sh 4351 4370     # apply across the full participant range
 ```
