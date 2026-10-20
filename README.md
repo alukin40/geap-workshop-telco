@@ -166,18 +166,19 @@ gcloud auth list                                           # verify devstarNNNN@
 gcloud auth application-default login && gcloud auth application-default set-quota-project YOUR_GCP_PROJECT_ID --quiet
 ```
 
-**3. Clone the repository, synchronize the Python virtual environment, and register the Jupyter kernel** (~20 seconds):
+**3. Clone the repository and synchronize the Python virtual environment** (~20 seconds):
 
 ```bash
 git clone https://github.com/alukin40/geap-workshop-telco
 cd geap-workshop-telco
 command -v uv >/dev/null || curl -LsSf https://astral.sh/uv/install.sh | sh
 export PATH="$HOME/.local/bin:$PATH"
-uv sync
-uv run python -m ipykernel install --user --name geap-telco-workshop --display-name "Python (geap-telco-workshop)"
+uv sync && UV_PROJECT_ENVIRONMENT="$HOME/.venv" uv sync
 ```
 
-**4. Select the workshop kernel and run Lab 00.** Open [labs/lab00_setup.ipynb](labs/lab00_setup.ipynb) in the Cloud Shell Editor, click **Select Kernel** in the top-right corner, and choose **Jupyter Kernel -> *Python (geap-telco-workshop)*** (or **Python Environments -> *.venv (Python 3.12)***). Leave *PROJECT_ID = ""* in Step 0.2 (or paste your project ID explicitly): *Lab 00* automatically verifies that all *pyproject.toml* packages are installed in the active kernel, syncs the ADC file and active project from your Cloud Shell terminal session into the kernel, and saves them to *workshop.env* for Labs 01 to 11. Click **Run All** (~2 minutes). Step 0.3 prints the project number and **the IAM roles your account holds**; if any later cell fails with *PERMISSION_DENIED*, share that role list with the instructor. Then proceed through Labs 01 to 11 in order.
+*(Why both `uv sync` and `UV_PROJECT_ENVIRONMENT="$HOME/.venv" uv sync`? Cloud Shell Editor opens your home directory `~` as its workspace root, so its **Select Kernel -> Python Environments** menu scans `~/.venv` rather than `~/geap-workshop-telco/.venv`. Because `uv` hardlinks from its cache, the second sync takes under 1 second and uses zero extra disk space.)*
+
+**4. Select the *.venv* kernel and run Lab 00.** Open [labs/lab00_setup.ipynb](labs/lab00_setup.ipynb) in the Cloud Shell Editor, click **Select Kernel** in the top-right corner, and choose **Python Environments -> *.venv (Python 3.12)*** (if the dropdown was already open, click the refresh icon in the top-right of the kernel picker). Leave *PROJECT_ID = ""* in Step 0.2 (or paste your project ID explicitly): *Lab 00* automatically verifies that all *pyproject.toml* packages are installed in the active kernel, syncs the ADC file and active project from your Cloud Shell terminal session into the kernel, and saves them to *workshop.env* for Labs 01 to 11. Click **Run All** (~2 minutes). Step 0.3 prints the project number and **the IAM roles your account holds**; if any later cell fails with *PERMISSION_DENIED*, share that role list with the instructor. Then proceed through Labs 01 to 11 in order.
 
 **5. Lab 01 Web Playground (Step 1.8).** Once the notebook cell launches the server, click **Web Preview -> Preview on port 8080**; the playground UI is served at */dev-ui/*. Allow microphone permissions in your browser to test Live Voice.
 
